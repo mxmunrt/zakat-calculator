@@ -8,67 +8,43 @@ const GOLD_NISAB_GRAMS = 87.48;
 const SILVER_NISAB_GRAMS = 612.36;
 const ZAKAT_RATE = 0.025; // 2.5%
 
-// Fallback prices per gram (GBP) — updated periodically
+// Fallback prices per gram — realistic estimates, updated March 2026
 const FALLBACK_PRICES = {
-  gold_gbp: 72.0,
-  silver_gbp: 0.75,
-  gold_usd: 90.0,
-  silver_usd: 0.95,
-  gold_eur: 83.0,
-  silver_eur: 0.87,
+  gold_gbp: 124.0,
+  silver_gbp: 2.10,
+  gold_usd: 155.0,
+  silver_usd: 2.65,
+  gold_eur: 143.0,
+  silver_eur: 2.40,
 };
 
 let cachedPrices = null;
 
 /**
- * Fetch live metal prices from a free API.
- * Returns { goldPerGram, silverPerGram } in the requested currency.
+ * Fetch live metal prices via our serverless API proxy.
+ * In production (Vercel), calls /api/prices which proxies to Swissquote.
  * Falls back to hardcoded values if the API call fails.
  */
 export async function fetchMetalPrices(currency = 'GBP') {
-  // Try cached first
+  // Try cached first (cache for 1 hour)
   if (cachedPrices && cachedPrices.currency === currency) {
-    return cachedPrices;
+    const age = Date.now() - (cachedPrices.timestamp || 0);
+    if (age < 3600000) return cachedPrices; // 1 hour cache
   }
 
   try {
-    // Using metals.dev free API
-    const response = await fetch(
-      `https://api.metals.dev/v1/latest?api_key=demo&currency=${currency}&unit=gram`
-    );
-
+    const response = await fetch(`/api/prices?currency=${currency}`);
     if (!response.ok) throw new Error('API response not OK');
 
     const data = await response.json();
-    const goldPerGram = data.metals?.gold || getFallback('gold', currency);
-    const silverPerGram = data.metals?.silver || getFallback('silver', currency);
-
-    cachedPrices = { goldPerGram, silverPerGram, currency, live: true };
+    cachedPrices = { ...data, timestamp: Date.now() };
     return cachedPrices;
   } catch (err) {
-    console.warn('Metal price API failed, using fallback prices:', err.message);
-
-    // Try a second API
-    try {
-      const curr = currency.toLowerCase();
-      const response2 = await fetch(
-        `https://www.goldapi.io/api/XAU/${currency}`,
-        { headers: { 'x-access-token': 'demo' } }
-      );
-      if (!response2.ok) throw new Error('GoldAPI response not OK');
-      const data2 = await response2.json();
-      // Convert per troy ounce to per gram (1 troy oz = 31.1035g)
-      const goldPerGram = data2.price / 31.1035;
-      const silverPerGram = getFallback('silver', currency);
-      cachedPrices = { goldPerGram, silverPerGram, currency, live: true };
-      return cachedPrices;
-    } catch (err2) {
-      // Use fallback
-      const goldPerGram = getFallback('gold', currency);
-      const silverPerGram = getFallback('silver', currency);
-      cachedPrices = { goldPerGram, silverPerGram, currency, live: false };
-      return cachedPrices;
-    }
+    console.warn('Price API failed, using fallback prices:', err.message);
+    const goldPerGram = getFallback('gold', currency);
+    const silverPerGram = getFallback('silver', currency);
+    cachedPrices = { goldPerGram, silverPerGram, currency, live: false, timestamp: Date.now() };
+    return cachedPrices;
   }
 }
 

@@ -89,11 +89,15 @@ async function loadPrices() {
       nisabEl.classList.remove('loading');
     }
 
-    // Update note
+    // Update note with per-gram price
     const noteEl = document.querySelector('.nisab-note');
     if (noteEl) {
-      const priceSource = metalPrices.live ? "today's market price" : 'estimated price';
-      noteEl.textContent = `Based on 612.36g of silver at ${priceSource}`;
+      if (metalPrices.live) {
+        const perGramFormatted = formatCurrency(metalPrices.silverPerGram, currentCurrency);
+        noteEl.textContent = `Based on 612.36g of silver at today's price (${perGramFormatted}/g)`;
+      } else {
+        noteEl.textContent = `Based on 612.36g of silver at estimated price`;
+      }
     }
   } catch (err) {
     console.error('Failed to load prices:', err);
