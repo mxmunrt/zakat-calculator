@@ -104,4 +104,4 @@ MIT
 
 ---
 
-**Built with ❤️ by Talukdar Group**
+**Built with ❤️ by [mrtalukdar.dev](https://mrtalukdar.dev)**
