@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Calculate your Zakat obligation accurately. A free, modern Zakat calculator based on Islamic jurisprudence with live gold and silver Nisab thresholds." />
+  <title>Zakat Calculator — Know What You Owe</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header id="app-header">
+    <div class="header-inner container">
+      <div class="logo">
+        <span class="logo-icon">☪</span>
+        <span class="logo-text">ZakatCalc</span>
+      </div>
+      <nav>
+        <a href="#calculator" class="nav-link">Calculator</a>
+        <a href="#learn" class="nav-link">Learn</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="container hero-content">
+      <p class="hero-arabic" aria-label="Bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+      <h1 class="hero-title">Zakat <span class="highlight">Calculator</span></h1>
+      <p class="hero-byline">BY TALUKDAR GROUP</p>
+      <p class="hero-subtitle">Fulfil your obligation with confidence. Calculate your Zakat accurately based on
+        authentic Islamic rulings.</p>
+      <a href="#calculator" class="btn btn-primary btn-lg">Calculate Now</a>
+    </div>
+    <div class="hero-glow"></div>
+  </section>
+
+  <!-- ===== CALCULATOR ===== -->
+  <section id="calculator">
+    <div class="container">
+      <h2 class="section-title">Calculate Your Zakat</h2>
+      <p class="section-subtitle">Answer each step to determine your Zakat obligation</p>
+
+      <!-- Currency selector -->
+      <div class="currency-selector">
+        <label for="currency-select">Currency</label>
+        <select id="currency-select">
+          <option value="GBP" selected>£ GBP</option>
+          <option value="USD">$ USD</option>
+          <option value="EUR">€ EUR</option>
+        </select>
+      </div>
+
+      <!-- Nisab info banner -->
+      <div id="nisab-banner" class="nisab-banner">
+        <div class="nisab-banner-inner">
+          <span class="nisab-label">Current Nisab Threshold (Silver Standard)</span>
+          <span class="nisab-value" id="nisab-value">Loading...</span>
+        </div>
+        <p class="nisab-note">Based on 612.36g of silver at today's market price</p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: 20%"></div>
+        </div>
+        <div class="progress-steps" id="progress-steps">
+          <span class="progress-step active" data-step="1">1</span>
+          <span class="progress-step" data-step="2">2</span>
+          <span class="progress-step" data-step="3">3</span>
+          <span class="progress-step" data-step="4">4</span>
+          <span class="progress-step" data-step="5">5</span>
+        </div>
+      </div>
+
+      <!-- Steps container -->
+      <div class="steps-container" id="steps-container">
+
+        <!-- STEP 1: Eligibility -->
+        <div class="step active" id="step-1" data-step="1">
+          <div class="step-header">
+            <span class="step-number">01</span>
+            <h3>Eligibility</h3>
+          </div>
+          <p class="step-description">Zakat is obligatory if you are a Muslim and your wealth has been at or above the
+            Nisab threshold for one full lunar year (Hawl ≈ 354 days).</p>
+          <div class="form-group">
+            <label class="toggle-label">Have you held your wealth for one full lunar year (Hawl)?</label>
+            <div class="toggle-group" id="hawl-toggle">
+              <button class="toggle-btn" data-value="yes">Yes</button>
+              <button class="toggle-btn" data-value="no">No</button>
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-secondary" disabled>Back</button>
+            <button class="btn btn-primary btn-next" id="next-1">Next</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Cash & Savings -->
+        <div class="step" id="step-2" data-step="2">
+          <div class="step-header">
+            <span class="step-number">02</span>
+            <h3>Cash & Savings</h3>
+          </div>
+          <p class="step-description">Include all cash in hand, bank balances, and any money owed to you that you expect
+            to receive.</p>
+          <div class="form-group">
+            <label for="cash-hand">Cash in Hand</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="cash-hand" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cash-bank">Bank Accounts (savings + current)</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="cash-bank" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cash-owed">Money Owed to You (expected to be returned)</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="cash-owed" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-secondary btn-prev" id="prev-2">Back</button>
+            <button class="btn btn-primary btn-next" id="next-2">Next</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Gold & Silver -->
+        <div class="step" id="step-3" data-step="3">
+          <div class="step-header">
+            <span class="step-number">03</span>
+            <h3>Gold & Silver</h3>
+          </div>
+          <p class="step-description">Include all gold and silver you own — jewellery, coins, bars, etc. Enter either
+            the weight in grams or the current market value.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gold-grams">Gold (grams)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix">g</span>
+                <input type="number" id="gold-grams" class="form-input" placeholder="0" min="0" step="0.01" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="gold-value">or Gold Value</label>
+              <div class="input-wrapper">
+                <span class="input-prefix currency-symbol">£</span>
+                <input type="number" id="gold-value" class="form-input" placeholder="0.00" min="0" step="0.01" />
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="silver-grams">Silver (grams)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix">g</span>
+                <input type="number" id="silver-grams" class="form-input" placeholder="0" min="0" step="0.01" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="silver-value">or Silver Value</label>
+              <div class="input-wrapper">
+                <span class="input-prefix currency-symbol">£</span>
+                <input type="number" id="silver-value" class="form-input" placeholder="0.00" min="0" step="0.01" />
+              </div>
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-secondary btn-prev" id="prev-3">Back</button>
+            <button class="btn btn-primary btn-next" id="next-3">Next</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Investments & Business -->
+        <div class="step" id="step-4" data-step="4">
+          <div class="step-header">
+            <span class="step-number">04</span>
+            <h3>Investments & Business</h3>
+          </div>
+          <p class="step-description">Include the current market value of stocks, crypto assets, and any merchandise you
+            hold for trade/resale.</p>
+          <div class="form-group">
+            <label for="stocks-value">Stocks & Shares</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="stocks-value" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="crypto-value">Cryptocurrency</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="crypto-value" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="business-value">Business Merchandise (goods for sale)</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="business-value" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-secondary btn-prev" id="prev-4">Back</button>
+            <button class="btn btn-primary btn-next" id="next-4">Next</button>
+          </div>
+        </div>
+
+        <!-- STEP 5: Liabilities -->
+        <div class="step" id="step-5" data-step="5">
+          <div class="step-header">
+            <span class="step-number">05</span>
+            <h3>Liabilities & Deductions</h3>
+          </div>
+          <p class="step-description">Deduct any debts you owe and bills that are immediately due. These reduce your net
+            zakatable wealth.</p>
+          <div class="form-group">
+            <label for="debts">Outstanding Debts</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="debts" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="bills">Immediate Bills / Expenses Due</label>
+            <div class="input-wrapper">
+              <span class="input-prefix currency-symbol">£</span>
+              <input type="number" id="bills" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-secondary btn-prev" id="prev-5">Back</button>
+            <button class="btn btn-primary" id="calculate-btn">Calculate Zakat</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Results -->
+      <div id="results" class="results hidden">
+        <div class="results-card">
+          <div class="results-header">
+            <h3>Your Zakat Summary</h3>
+            <p class="results-date" id="results-date"></p>
+          </div>
+
+          <div class="results-main" id="results-main">
+            <!-- Filled by JS -->
+          </div>
+
+          <div class="results-breakdown">
+            <h4>Breakdown</h4>
+            <table class="breakdown-table" id="breakdown-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="breakdown-body">
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="results-actions">
+            <button class="btn btn-secondary" id="recalculate-btn">Recalculate</button>
+            <button class="btn btn-primary" id="print-btn">Print Results</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== LEARN / INFO ===== -->
+  <section id="learn">
+    <div class="container">
+      <h2 class="section-title">Understanding Zakat</h2>
+      <p class="section-subtitle">The third pillar of Islam</p>
+      <div class="info-grid">
+
+        <div class="info-card">
+          <div class="info-icon">📖</div>
+          <h3>What is Zakat?</h3>
+          <p>Zakat is an obligatory act of charity that purifies your wealth. It is one of the five pillars of Islam and
+            requires Muslims to give 2.5% of their qualifying wealth to those in need each year.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">⚖️</div>
+          <h3>What is Nisab?</h3>
+          <p>Nisab is the minimum threshold of wealth a Muslim must possess before Zakat becomes obligatory. It is based
+            on the value of 87.48g of gold or 612.36g of silver. Most scholars recommend using the silver standard.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📅</div>
+          <h3>What is Hawl?</h3>
+          <p>Hawl refers to one full lunar year (~354 days). You must have held wealth at or above the Nisab threshold
+            for one entire Hawl before Zakat becomes due on it.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🏠</div>
+          <h3>What is Exempt?</h3>
+          <p>Your personal home, car, clothing, household furniture, and tools of your trade are not subject to Zakat.
+            Only wealth held for savings, investment, or trade is zakatable.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🎯</div>
+          <h3>The 5 Conditions</h3>
+          <p>Zakat is due when: (1) you are Muslim, (2) the wealth type is zakatable, (3) you have full ownership, (4)
+            it reaches the Nisab, and (5) one Hawl has passed.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🤲</div>
+          <h3>Who Receives Zakat?</h3>
+          <p>Zakat is distributed to eight categories of recipients mentioned in the Quran (9:60), including the poor,
+            the needy, those in debt, and travellers in need.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="app-footer">
+    <div class="container footer-inner">
+      <p class="footer-disclaimer">This calculator is for guidance only. Please consult a qualified Islamic scholar for
+        specific rulings.</p>
+      <p class="footer-source">Zakat rules based on teachings by <strong>Sheikh Majed Mahmoud</strong> — <a
+          href="https://www.youtube.com/watch?v=OF-Nb8qdfcU" target="_blank" rel="noopener">Fiqh of Zakat Series</a></p>
+      <p class="footer-copy">&copy; 2025 ZakatCalc. Built with ❤️</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
