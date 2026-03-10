@@ -29,7 +29,7 @@ export async function fetchMetalPrices(currency = 'GBP') {
   // Try cached first (cache for 1 hour)
   if (cachedPrices && cachedPrices.currency === currency) {
     const age = Date.now() - (cachedPrices.timestamp || 0);
-    if (age < 3600000) return cachedPrices; // 1 hour cache
+    if (age < 86400000) return cachedPrices; // 24 hour cache
   }
 
   try {

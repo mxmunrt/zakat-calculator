@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     // CORS headers for the frontend
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
+    res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=43200');
 
     const currency = (req.query.currency || 'GBP').toUpperCase();
 
